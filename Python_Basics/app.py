@@ -864,52 +864,399 @@
 # Making custom containers
 # container like list ,string , dictionary
 
-class TagCloud:
-    def __init__(self):
-        self.__tags = {}
+# class TagCloud:
+#     def __init__(self):
+#         self.__tags = {}
 
-    def add(self, tag):
-        self.__tags[tag.lower()] = self.__tags.get(tag.lower(), 0) + 1
+#     def add(self, tag):
+#         self.__tags[tag.lower()] = self.__tags.get(tag.lower(), 0) + 1
 
-    def __getitem__(self, tag):
-        return self.__tags.get(tag.lower(), 0)
+#     def __getitem__(self, tag):
+#         return self.__tags.get(tag.lower(), 0)
 
-    def __setitem__(self, tag, count):
-        self.__tags[tag.lower()] = count
+#     def __setitem__(self, tag, count):
+#         self.__tags[tag.lower()] = count
 
-    def __len__(self):
-        return len(self.__tags)
+#     def __len__(self):
+#         return len(self.__tags)
 
-    def __iter__(self):
-        # iter is a built in function which returns one item at a time
-        return iter(self.__tags)
+#     def __iter__(self):
+#         # iter is a built in function which returns one item at a time
+#         return iter(self.__tags)
 
 
-cloud = TagCloud()
-cloud.add("Python")
-cloud.add("python")  # we are handling casing so not counted different
-cloud.add("Python")
-cloud.add("Python")
-# print(cloud.__tags)
+# cloud = TagCloud()
+# cloud.add("Python")
+# cloud.add("python")  # we are handling casing so not counted different
+# cloud.add("Python")
+# cloud.add("Python")
+# # print(cloud.__tags)
 
-print(cloud["python"])
-cloud["python"] = 0
-print(cloud["python"])
-print(len(cloud))
+# print(cloud["python"])
+# cloud["python"] = 0
+# print(cloud["python"])
+# print(len(cloud))
 
-for key in cloud:
-    print(key, cloud[key])
+# for key in cloud:
+#     print(key, cloud[key])
 
-# Private members
-print(cloud["PYTHON"])
+# # Private members
+# print(cloud["PYTHON"])
 
-# print(cloud.tags["PYTHON"]) -> THIS GIVES ERROR AS TAGS DOES NOT HAVE PYTHON
-# the problem here is that we have access to tags outside class
+# # print(cloud.tags["PYTHON"]) -> THIS GIVES ERROR AS TAGS DOES NOT HAVE PYTHON
+# # the problem here is that we have access to tags outside class
 
-# print(cloud.__tags) #gives error now as tags is private
+# # print(cloud.__tags) #gives error now as tags is private
 
-# but still we can acess it
-print(cloud.__dict__)
-print(cloud._TagCloud__tags)  # acessed private member
+# # but still we can acess it
+# print(cloud.__dict__)
+# print(cloud._TagCloud__tags)  # acessed private member
 
+# ---------------------------------------------------------------------------------------
+# properties
+
+# class Product:
+#     def __init__(self, price):
+#         self.set_price(price)
+
+#     def get_price(self):
+#         return self.__price
+
+#     def set_price(self, value):
+#         if value < 0:
+#             raise ValueError("Price cannot be negative.")
+#         self.__price = value
+
+
+# product = Product(-50) #raises value error
+
+# to implement this above method we can use properties
+# a property is an object that sits in front of attribute and sets or gets its value
+# class Product:
+#     def __init__(self, price):
+#         self.set_price(price)
+
+#     def get_price(self):
+#         return self.__price
+
+#     def set_price(self, value):
+#         if value < 0:
+#             raise ValueError("Price cannot be negative.")
+#         self.__price = value
+
+#     # here price is property
+#     price = property(get_price, set_price)
+
+
+# product = Product(10)
+# print(product.price)
+# product.price = 12
+# print(product.price)
+
+# in the above code we have property but still we can acess setter and getter
+# one solution is to declare them private
+# another solution -> use decorators
+
+# class Product:
+#     def __init__(self, price):
+#         self.price = price
+
+#     @property
+#     def price(self):
+#         return self.__price
+
+#     @price.setter
+#     def price(self, value):
+#         if value < 0:
+#             raise ValueError("Price cannot be negative")
+#         self.__price = value
+
+
+# product = Product(10)
+# print(product.price)
+# ---------------------------------------------------------------------------------------
+# Inheritance
+
+# class Animal:
+#     def __init__(self):
+#         self.age = 1
+
+#     def eat(self):
+#         print("eat")
+# # Animal : parent or base class
+# # Mammal : child or sub class
+
+
+# class Mammal(Animal):
+#     def walk(self):
+#         print("walk")
+
+
+# class Fish(Animal):
+#     def swim(self):
+#         print("swim")
+
+
+# m = Mammal()
+# m.eat()
+# print(m.age)
+
+# print(isinstance(m, Animal))  # m is also an instance of parent class of mammal
+# # the object class
+# # It is base class for all classes in python
+
+# print(isinstance(m, object))
+# o = object()  # built-in
+# print(issubclass(Mammal, Animal))
+# print(issubclass(Mammal, object))
+# ---------------------------------------------------------------------------------------
+# Method overriding -> overriding some method in base class by method in child class
+
+# class Animal:
+#     def __init__(self):
+#         self.age = 1
+
+
+# class Mammal(Animal):
+#     def __init__(self): # this overrides constructor of base class
+#         self.weight = 2
+
+
+# m = Mammal()
+# print(m.weight)
+# print(m.age)
+
+# to use base class constructor
+# class Animal:
+#     def __init__(self):
+#         print("Animal Constructor")
+#         self.age = 1
+
+
+# class Mammal(Animal):
+#     def __init__(self):  # this overrides constructor of base class
+#         super().__init__()
+#         print("Mammal Constructor")
+#         self.weight = 2
+
+
+# m = Mammal()
+# print(m.weight)
+# print(m.age)
+# ---------------------------------------------------------------------------------------
+# Multi level inheritance
+# class Animal:
+#     def eat(self):
+#         print("eat")
+
+# class Bird(Animal):
+#     def fly(self):
+#         print("fly")
+
+# class Chicken(Bird):
+#     pass
+
+# ---------------------------------------------------------------------------------------
+# Multiple Inheritance
+# class Employee:
+#     def greet(self):
+#         print("Hello emp")
+
+
+# class Person:
+#     def greet(self):
+#         print("Hello person")
+
+
+# class Manager(Employee, Person):
+#     pass
+
+
+# class SDE(Person, Employee):
+#     pass
+
+
+# m = Manager()
+# m.greet()
+# s = SDE()
+# s.greet()
+# ---------------------------------------------------------------------------------------
+# A good example of inheritance
+# class InvalidOperationError(Exception):
+#     pass
+
+
+# class Stream:
+#     def __init__(self):
+#         self.opened = False
+
+#     def open(self):
+#         if self.opened:
+#             raise InvalidOperationError("Stream already opened")
+#         self.opened = True
+
+#     def close(self):
+#         if not self.opened:
+#             raise InvalidOperationError("STream already opened")
+#         self.opened = False
+
+
+# class FileStream(Stream):
+#     def read(self):
+#         print("Reading data from a file")
+
+
+# class NetworkStream(Stream):
+#     def read(self):
+#         print("Reading data from a network")
+# ---------------------------------------------------------------------------------------
+# Abstarct Base Class
+# from abc import ABC, abstractmethod
+
+
+# class InvalidOperationError(Exception):
+#     pass
+
+
+# class Stream(ABC):
+#     def __init__(self):
+#         self.opened = False
+
+#     def open(self):
+#         if self.opened:
+#             raise InvalidOperationError("Stream already opened")
+#         self.opened = True
+
+#     def close(self):
+#         if not self.opened:
+#             raise InvalidOperationError("STream already opened")
+#         self.opened = False
+
+#     @abstractmethod
+#     def read(self):
+#         pass
+
+
+# class FileStream(Stream):
+#     def read(self):
+#         print("Reading data from a file")
+
+
+# class NetworkStream(Stream):
+#     def read(self):
+#         print("Reading data from a network")
+
+# # here memoryStream becomes abstract class as it has not defined read which was
+# # abstract method, for a class to become child of abstract class it must define abstract methods
+# # this implements consistency in codebase
+
+
+# class MemoryStream(Stream):
+#     pass
+
+# # stream = Stream() -> error as abstract class can not be instanciated
+# ---------------------------------------------------------------------------------------
+
+# Polymorphism
+# from abc import ABC, abstractmethod
+
+# class UIControl(ABC):
+#     @abstractmethod
+#     def draw(self):
+#         pass
+
+# class TextBox(UIControl):
+#     def draw(self):
+#         print("TextBox")
+
+# class DropDown(UIControl):
+#     def draw(self):
+#         print("DropDown")
+
+# def draw(control):
+#     control.draw()
+
+# dd = DropDown()
+# tb = TextBox()
+# draw(dd)
+# draw(tb)
+# ---------------------------------------------------------------------------------------
+# Duck typing -> it does not check type of object , just check its existence
+# so we do need abstract base class for polymorphism
+# not a good practice
+# class TextBox:
+#     def draw(self):
+#         print("TextBox")
+
+
+# class DropDown:
+#     def draw(self):
+#         print("DropDown")
+
+
+# def draw(control):
+#     control.draw()
+
+
+# dd = DropDown()
+# tb = TextBox()
+# draw(dd)
+# draw(tb)
+
+# ---------------------------------------------------------------------------------------
+# Extending built-in types
+
+# class Text(str):
+#     def duplicate(self):
+#         return self+self
+
+
+# # it has all methods of strings + our own created methods
+# text = Text("Pyhton")
+# print(text.lower())
+# print(text.duplicate())
+
+
+# class TrackableList(list):
+#     def append(self, object):
+#         print("Append called")
+#         super().append(object)
+
+
+# l = TrackableList()
+# l.append(4)
+# print(l)
+
+# ---------------------------------------------------------------------------------------
+# Data classes
+# we use classes to bundle methods and data but some classes only have data
+# these classes are called data classes
+
+# class Point:
+#     def __init__(self, x, y):
+#         self.x = x
+#         self.y = y
+
+#     def __eq__(self, other):
+#         return self.x == other.x and self.y == other.y
+
+
+# p1 = Point(1, 2)
+# p2 = Point(1, 2)
+# print(p1 == p2)  # compares addresses but after eq compares values
+# print(id(p1))
+# print(id(p2))
+
+# if we are dealing with classes that only have data use namedtuple like this:
+from collections import namedtuple
+
+Point = namedtuple("Point", ["x", "y"])
+p1 = Point(x=1, y=2)
+print(p1.x)
+# named tiples are immutable
+# p1.x = 10 error
+p2 = Point(x=1, y=2)
+print(p1 == p2)
+print(id(p1))
+print(id(p2))
 # ---------------------------------------------------------------------------------------
