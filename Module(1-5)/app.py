@@ -1248,15 +1248,15 @@
 # print(id(p2))
 
 # if we are dealing with classes that only have data use namedtuple like this:
-from collections import namedtuple
+# from collections import namedtuple
 
-Point = namedtuple("Point", ["x", "y"])
-p1 = Point(x=1, y=2)
-print(p1.x)
-# named tiples are immutable
-# p1.x = 10 error
-p2 = Point(x=1, y=2)
-print(p1 == p2)
-print(id(p1))
-print(id(p2))
+# Point = namedtuple("Point", ["x", "y"])
+# p1 = Point(x=1, y=2)
+# print(p1.x)
+# # named tiples are immutable
+# # p1.x = 10 error
+# p2 = Point(x=1, y=2)
+# print(p1 == p2)
+# print(id(p1))
+# print(id(p2))
 # ---------------------------------------------------------------------------------------
